@@ -252,13 +252,18 @@ def generate_excel():
 
 # function that will call word and open a contract that we have generated
 def open_contract():
-    filename = filedialog.askopenfilename(filetypes=(("Word Files", "*.docx"), ("All files", "*.*")))
-    os.startfile('%s' % filename)
+    filename = filedialog.askopenfilename(initialdir=os.getcwd(), filetypes=(("Word Files", "*.docx"), ("All files", "*.*")))
+    # there is different behavior on Windows vs Linux
+    if tk.sys.platform == "win32":
+        os.startfile('%s' % filename)
+    else:
+        # we assume Mac since we do not support linux yet
+        subprocess.call(["open", filename])
 
 
 # function that will call excel to edit the excel file used to generate contracts
 def modify_excel():
-    filename = filedialog.askopenfilename(filetypes=(("Excel Files", "*.xlsx"), ("All files", "*.*")))
+    filename = filedialog.askopenfilename(initialdir=os.getcwd(), filetypes=(("Excel Files", "*.xlsx"), ("All files", "*.*")))
     # there is different behavior on Windows vs Linux
     if tk.sys.platform == "win32":
         os.startfile('%s' % filename)
